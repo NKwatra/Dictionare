@@ -6,7 +6,7 @@ function selectionHandler() {
     const text = getSelectedText();
     if(text)
     {
-        alert("Selected text is : " + text);
+        createOverlay(330,400,text);
     }
 };
 
