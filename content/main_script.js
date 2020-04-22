@@ -7,6 +7,7 @@ function selectionHandler() {
     if(text)
     {
         createOverlay(330,400,text);
+        appendListeners(text);
     }
 };
 
