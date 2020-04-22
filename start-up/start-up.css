@@ -1,0 +1,57 @@
+.img-container{
+    display: flex;
+    justify-content: center;
+}
+
+.ext_toggle{
+    width: 75%;
+    padding: 10px;
+    align-self: center;
+    margin-top: 40px;
+    border-radius: 20px;
+    color: white;
+    font-size: 1rem;
+}
+
+.ext_toggle:focus{
+    outline: none;
+}
+
+.ext_toggle:disabled{
+    color: #17a2b8;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.ext_off{
+    background-color: #dc3545;
+}
+
+.ext_on{
+    background-color: #28a745;
+}
+
+
+.logo_img{
+   margin-top: -30px; 
+}
+
+.text-center
+{
+    text-align: center;
+    line-height: 2.5rem;
+    font-size: 1.1rem;   
+    margin-top: -50px;
+}
+
+.text-light{
+    color: #6c757d; 
+}
+
+#container{
+    width: 350px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
