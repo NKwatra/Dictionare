@@ -1,17 +1,35 @@
 function getSelectedText(){
-    let text = '';
+    let text = '', range = null, x,y;
     if(typeof window.getSelection != "undefined")
     {
-        text = window.getSelection().toString();
+        let sel = window.getSelection();
+        if(sel.rangeCount)
+        {
+            range = sel.getRangeAt(0).cloneRange();
+        }
+        text = sel.toString();
     }else if(typeof document.selection != "undefined" && document.selection.type == "Text")
     {
-        text = document.selection.createRange().text;
+        range = document.selection.createRange();
+        text = selection.text;
     }
     if(text != '')
     {
         text = (text.split(" ")[0]).trim();
+        const span = document.createElement('span');
+        if(span.getClientRects)
+        {
+            span.appendChild(document.createTextNode("\u200b"));
+            range.insertNode(span);
+            const rect = span.getClientRects()[0];
+            x = rect.left;
+            y = rect.top;
+            let spanParent = span.parentNode;
+            spanParent.removeChild(span);
+            spanParent.normalize();
+        }
     }
-    return text;
+    return {text,x,y};
 }
 
 function createOverlay(posx, posy, word)

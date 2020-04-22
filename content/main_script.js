@@ -3,10 +3,12 @@ const guideKey = 'Dictionare_guideOn';
 const cacheKey = 'Dictionare_cache';
 
 function selectionHandler() {
-    const text = getSelectedText();
+    let {text,x,y} = getSelectedText();
+    x = Math.round(x);
+    y = Math.round(y);
     if(text)
     {
-        createOverlay(330,400,text);
+        createOverlay(x,y,text);
         appendListeners(text);
     }
 };
