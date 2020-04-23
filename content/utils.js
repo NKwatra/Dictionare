@@ -1,42 +1,76 @@
-function getSelectedText(){
-    let text = '', range = null, x,y;
-    if(typeof window.getSelection != "undefined")
-    {
-        let sel = window.getSelection();
-        if(sel.rangeCount)
-        {
-            range = sel.getRangeAt(0).cloneRange();
+// global variable to track if overlay is currently displayed
+let overlayVisible = false;
+
+// function to get coordinates and text of selected area
+function getSelectionInfo() {
+    let doc = window.document;
+    let sel = doc.selection, range, rects, rect;
+    let x = 0, y = 0, text ='';
+    // find x and y coordinates of selection and text of selection
+    if (sel) {
+        if (sel.type == "Text") {
+            range = sel.createRange();
+            text = range.text;
+            range.collapse(true);
+            x = range.boundingLeft;
+            y = range.boundingTop;
         }
+    } else if (window.getSelection) {
+        sel = window.getSelection();
         text = sel.toString();
-    }else if(typeof document.selection != "undefined" && document.selection.type == "Text")
-    {
-        range = document.selection.createRange();
-        text = selection.text;
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0).cloneRange();
+            if (range.getClientRects) {
+                range.collapse(true);
+                rects = range.getClientRects();
+                if (rects.length > 0) {
+                    rect = rects[0];
+                }
+                x = rect.left;
+                y = rect.top;
+            }
+            // Fall back to inserting a temporary element
+            if (x == 0 && y == 0) {
+                var span = doc.createElement("span");
+                if (span.getClientRects) {
+                    // Ensure span has dimensions and position by
+                    // adding a zero-width space character
+                    span.appendChild( doc.createTextNode("\u200b") );
+                    range.insertNode(span);
+                    rect = span.getClientRects()[0];
+                    x = rect.left;
+                    y = rect.top;
+                    var spanParent = span.parentNode;
+                    spanParent.removeChild(span);
+
+                    // Glue any broken text nodes back together
+                    spanParent.normalize();
+                }
+            }
+        }
     }
+    // if use selected multiple words, extract the first word
     if(text != '')
     {
-        text = (text.split(" ")[0]).trim();
-        const span = document.createElement('span');
-        if(span.getClientRects)
-        {
-            span.appendChild(document.createTextNode("\u200b"));
-            range.insertNode(span);
-            const rect = span.getClientRects()[0];
-            x = rect.left;
-            y = rect.top;
-            let spanParent = span.parentNode;
-            spanParent.removeChild(span);
-            spanParent.normalize();
-        }
+        text = (text.split(/\W/)[0]).trim();
     }
-    return {text,x,y};
+
+    return { x,y,text };
 }
 
+
+/* 
+    @param {posx} : x co-ordinate of overlay
+    @param {posy} : y co-ordinate of overlay
+    @parma {word} : word which needs to be searched
+*/
 function createOverlay(posx, posy, word)
 {
+    // create a container for overlay
     const container = document.createElement('div');
     container.className = "dictionare_container";
     container.id = "dictionare_overlay"
+    // set innerhtml to create the complete overlay
     container.innerHTML = `<div class="dictionare_cross_container ">
     <svg class="dictionare_pointer" id="dictionare_cross" width="1em" height="1em" viewBox="0 0 16 16" fill="#0000000" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"/>
@@ -65,14 +99,19 @@ function createOverlay(posx, posy, word)
           </svg>
     </div>
 </div>`;
+    // position the overlay and prepend it to body
     container.style.top = posy + "px";
     container.style.left = posx + "px";
     document.body.prepend(container);
 }
 
 
+/* this function is used to simulate click on a DOM element
+    @param {element} : DOM element which needs to be clicked
+*/
 function simulateClick(element)
 {
+    // fire an on click event on the element
     if(element.fireEvent)
     {
         element.fireEvent("onclick");
@@ -84,18 +123,62 @@ function simulateClick(element)
     }
 }
 
+/*
+    function to append click listeners to various elements of overlay
+    @param {word} : the current word, which is being displayed in overlay
+*/
 function appendListeners(word){
+    // create references to overlay elements
     const speaker = document.getElementById('dictionare_speaker');
     const cross   = document.getElementById('dictionare_cross');
     const right   = document.getElementById('dictionare_right');
+    // create click handlers for overlay elements
     const speakerClickHandler = () => {pronounceWord(word)};
     const rightClickHandler = () => {}
     const crossClickHandler = () => {
+        // remove all event listeners and overlay from DOM.
         speaker.removeEventListener('click', speakerClickHandler);
         cross.removeEventListener('click', crossClickHandler);
         right.removeEventListener('click', rightClickHandler);
         document.body.removeChild(document.getElementById('dictionare_overlay'));
+        overlayVisible = false;
     };
+    // attach the event listeners
     speaker.addEventListener('click',speakerClickHandler); 
     cross.addEventListener('click', crossClickHandler);
+}
+
+/*
+    function to modify(if reqd) x and y co-ordinates of overlay so that
+    it does not go offscreen
+    @param{x} : current x co-ordinate of overlay
+    @param{y} : current y co-ordinate of overlay
+    @return {new Coordinates} : updated co-ordinates to ensure no overflow.
+ */
+function ensureOnScreenOverlay(x,y){
+    // get avaiable width and height of screen
+    const width = document.documentElement.clientWidth;
+    const height = document.documentElement.clientHeight;
+    
+    // no overflow over the left edge, use 10 for good user experience
+    if(x <= 10)
+        x = 20;
+    
+    // no overflow over the top edge
+    if(y <= 10)
+        y = 20; 
+        
+    // no overflow over the right edge
+    if(x + 350 >= width - 10)
+        x = width - 360;
+        
+    // no overlfow over the bottom edge
+    if(y + 200 >= height - 10)
+        y = height - 210;
+        
+    // round coordinates to integer    
+    x = Math.round(x);
+    y = Math.round(y);  
+
+    return {x,y};
 }

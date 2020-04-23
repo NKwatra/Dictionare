@@ -3,15 +3,17 @@ const stateKey = 'Dictionare_stateOn';
 const guideKey = 'Dictionare_guideOn';
 const cacheKey = 'Dictionare_cache';
 
-// global variable to track if overlay is currently displayed
-let overlayVisible = false;
+
 
 // function to handle text selection logic
 function selectionHandler() {
     // get the text and the co-ordinates of the selected area 
-    let {text,x,y} = getSelectedText();
-    x = Math.round(x);
-    y = Math.round(y);
+    let {text,x,y} = getSelectionInfo();
+    
+    // ensure that placing overlay at this position would not make it go off the screen
+    let coordinates = ensureOnScreenOverlay(x,y);
+    x = coordinates.x;
+    y = coordinates.y;
 
     // if text is not empty, so text has been selected
     if(text)
