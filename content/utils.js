@@ -70,6 +70,20 @@ function createOverlay(posx, posy, word)
     document.body.prepend(container);
 }
 
+
+function simulateClick(element)
+{
+    if(element.fireEvent)
+    {
+        element.fireEvent("onclick");
+    }else
+    {
+        const newEvent = document.createEvent('Events');
+        newEvent.initEvent('click', true, false);
+        element.dispatchEvent(newEvent);
+    }
+}
+
 function appendListeners(word){
     const speaker = document.getElementById('dictionare_speaker');
     const cross   = document.getElementById('dictionare_cross');
