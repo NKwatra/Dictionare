@@ -23,11 +23,11 @@
     border-color: transparent;
 }
 
-.ext_off{
+.ext_on{
     background-color: #dc3545;
 }
 
-.ext_on{
+.ext_off{
     background-color: #28a745;
 }
 
