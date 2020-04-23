@@ -15,10 +15,10 @@ function getSelectionInfo() {
             x = range.boundingLeft;
             y = range.boundingTop;
         }
-    } else if (window.getSelection) {
+    } else if (typeof window.getSelection != "undefined") {
         sel = window.getSelection();
         text = sel.toString();
-        if (sel.rangeCount) {
+        if (text != '' && sel.rangeCount) {
             range = sel.getRangeAt(0).cloneRange();
             if (range.getClientRects) {
                 range.collapse(true);
@@ -134,18 +134,22 @@ function appendListeners(word){
     const right   = document.getElementById('dictionare_right');
     // create click handlers for overlay elements
     const speakerClickHandler = () => {pronounceWord(word)};
-    const rightClickHandler = () => {}
+    const rightClickHandler = () => {addDetailsOverlay()};
     const crossClickHandler = () => {
         // remove all event listeners and overlay from DOM.
         speaker.removeEventListener('click', speakerClickHandler);
         cross.removeEventListener('click', crossClickHandler);
         right.removeEventListener('click', rightClickHandler);
+        const detail_cross = document.getElementById('dictionare_detail_cross');
+        if(detail_cross)
+            simulateClick(detail_cross);
         document.body.removeChild(document.getElementById('dictionare_overlay'));
         overlayVisible = false;
     };
     // attach the event listeners
     speaker.addEventListener('click',speakerClickHandler); 
     cross.addEventListener('click', crossClickHandler);
+    right.addEventListener('click', rightClickHandler);
 }
 
 /*
@@ -181,4 +185,90 @@ function ensureOnScreenOverlay(x,y){
     y = Math.round(y);  
 
     return {x,y};
+}
+
+/*
+    function to get more details overlay's co-ordinates
+*/
+function getDetailsOverlayCord()
+{
+    // get position of previous overlay
+    const boundingRect = document.getElementById('dictionare_overlay').getBoundingClientRect();
+    // try for right placing
+    let x = boundingRect.left, y = boundingRect.top;
+    // get screen width and height
+    const width = document.documentElement.clientWidth;
+    const height = document.documentElement.clientHeight;
+    // if can be placed on the right
+    if(x + 700 < width - 10)
+    {
+        x = x + 351;
+    } // else try to place below
+    else if(y + 400 < height - 10)
+    {
+        y = y + 201;
+    } // else try to place on top
+    else if(y - 200 > 10)
+    {
+        y = y - 201;
+    } // else place to left
+    else
+    {
+        x = x - 351;
+    }
+    
+    return {x,y};
+}
+
+/* function to handle click for close button on the detail overlay */
+function closeDetailOverlay()
+{
+    document.getElementById('dictionare_detail_cross').removeEventListener('click', closeDetailOverlay);
+    document.body.removeChild(document.getElementById('dictionare_detail_overlay'));
+}
+
+/*
+    function to add the more details overlay
+*/
+function addDetailsOverlay()
+{
+    const {x,y} = getDetailsOverlayCord();
+    const detailsContainer = document.createElement('div');
+    detailsContainer.className += 'dictionare_container';
+    detailsContainer.id = "dictionare_detail_overlay"
+    detailsContainer.innerHTML = `<div class="dictionare_cross_container ">
+    <svg class="dictionare_pointer" id="dictionare_detail_cross" width="1em" height="1em" viewBox="0 0 16 16" fill="#0000000" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+        <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"/>
+      </svg>
+</div>
+<div class="dictionare_row dictionare_mt">
+    <div class="dictionare_col-4 ">
+        <strong>Synonyms <span class="dictionare_text-right">:</span></strong>
+    </div> 
+    <div class="dictionare_col-8">
+        sym1, sym2, sym3, sym4, sym5, sym6, sym7
+    </div>
+</div>
+<div class="dictionare_row dictionare_mt">
+    <div class="dictionare_col-4">
+        <strong> Antonymns <span class="dictionare_text-right">:</span> </strong> 
+    </div>
+    <div class="dictionare_col-8">
+        ant1, ant2, ant3, ant4, ant5, ant6, ant7
+    </div>
+</div>
+<div class="dictionare_usage_header dictionare_mt"><strong>Usage :</strong></div>
+<div class="dictionare_usage_container">
+    <ol>
+        <li>usage 1</li>
+        <li>usage 2</li>
+        <li>usage 3</li>
+        <li>usage 4</li>
+    </ol>
+</div>`;
+    detailsContainer.style.left = x + "px";
+    detailsContainer.style.top = y + "px";
+    document.body.prepend(detailsContainer);
+    document.getElementById('dictionare_detail_cross').addEventListener('click', closeDetailOverlay);
 }
