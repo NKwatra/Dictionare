@@ -16,9 +16,6 @@ chrome.storage.local.get([stateKey, guideKey], results => {
     const className = stateOn ? " ext_on" : " ext_off";
     toggleButton.textContent = text;
     toggleButton.className += className;
-    // update badge color and text
-    chrome.browserAction.setBadgeText({text : "ON"});
-    chrome.browserAction.setBadgeBackgroundColor({color : "#28a745"})
 
     // add click listener to the toggle button
     toggleButton.addEventListener('click', function() {
