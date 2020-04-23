@@ -23,11 +23,14 @@ chrome.runtime.onInstalled.addListener(function() {
         // else the extention is just updated and we don't need to set the key-value pairs
     });
 
+    // set the badge to display that extention is on
     chrome.browserAction.setBadgeText({text : "ON"});
     chrome.browserAction.setBadgeBackgroundColor({color : "#28a745"});
 });
 
+// fired when a new window is created in chrome
 chrome.windows.onCreated.addListener(function() {
+    // get the current state of extention and update batch to show extention state
     chrome.storage.local.get([stateKey], result => {
         const state = result[stateKey];
         const text = state ? "ON" : "OFF";
@@ -35,4 +38,4 @@ chrome.windows.onCreated.addListener(function() {
         chrome.browserAction.setBadgeText({text});
         chrome.browserAction.setBadgeBackgroundColor({color : bgColor});
     });
-});
+}, {windowTypes : ['normal']});
