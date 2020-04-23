@@ -3,18 +3,32 @@ const stateKey = 'Dictionare_stateOn';
 const guideKey = 'Dictionare_guideOn';
 const cacheKey = 'Dictionare_cache';
 
+
+
 // function to handle text selection logic
 function selectionHandler() {
     // get the text and the co-ordinates of the selected area 
-    let {text,x,y} = getSelectedText();
-    x = Math.round(x);
-    y = Math.round(y);
+    let {text,x,y} = getSelectionInfo();
+    
+    // ensure that placing overlay at this position would not make it go off the screen
+    let coordinates = ensureOnScreenOverlay(x,y);
+    x = coordinates.x;
+    y = coordinates.y;
 
     // if text is not empty, so text has been selected
     if(text)
     {
+        // if some previous overlay is visible, remove it
+        if(overlayVisible)
+        {
+            overlayVisible = false;
+            simulateClick(document.getElementById('dictionare_cross'));
+        }
+
         // create overlay to show word and it's meaning
         createOverlay(x,y,text);
+        overlayVisible = true;
+
         // add listener to overlay to close, speak word and to expand details
         // of the word.
         appendListeners(text);
@@ -23,7 +37,7 @@ function selectionHandler() {
 
 // get the current state of extention, 
 chrome.storage.local.get([stateKey, cacheKey], results => {
-    const currentState = results[stateKey];
+    const currentState = results[stateKey] || true;
     const cache = results[cacheKey];
     // if extention is enables
     if(currentState)
