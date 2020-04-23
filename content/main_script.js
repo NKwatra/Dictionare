@@ -23,7 +23,7 @@ function selectionHandler() {
 
 // get the current state of extention, 
 chrome.storage.local.get([stateKey, cacheKey], results => {
-    const currentState = results[stateKey] || true;
+    const currentState = results[stateKey];
     const cache = results[cacheKey];
     // if extention is enables
     if(currentState)
