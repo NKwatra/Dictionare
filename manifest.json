@@ -23,6 +23,13 @@
     "background" : {
         "persistent" : false,
         "scripts" : ["background/background.js"]
-    }
+    },
+    "content_scripts" : [
+        {
+            "js" : ["content/netWorkandSpeech.js", "content/utils.js", "content/main_script.js"],
+            "matches" : ["*://*/*"],
+            "css" : ["content/styles.css"]
+        }
+    ]
 
 }
