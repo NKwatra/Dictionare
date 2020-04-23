@@ -1,12 +1,12 @@
 // constants for keys to be used for storeing extention state
-const stateKey = 'Dictionary_stateOn';
-const guideKey = 'Dictionary_guideOn';
+const stateKey = 'Dictionare_stateOn';
+const guideKey = 'Dictionare_guideOn';
 
 // load off extention state from storage
 chrome.storage.local.get([stateKey, guideKey], results => {
     // create variable to store extention state
-    let stateOn = results[stateKey] || true;
-    let guideOn = results[guideKey] || true;
+    let stateOn = results[stateKey];
+    let guideOn = results[guideKey];
     // get reference to toggle button 
     const toggleButton = document.querySelector('.ext_toggle');
     // make button active and change color of button depending 
