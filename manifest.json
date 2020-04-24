@@ -22,6 +22,22 @@
     "background" : {
         "persistent" : false,
         "scripts" : ["background/background.js"]
+    },
+    "commands" : {
+        "turn_extension_on" : {
+            "suggested_key" : {
+                "default": "Ctrl + I", 
+                "mac": "Command + I"
+            },
+            "description" : "Turns on Dictionare extension"
+        },
+        "turn_extension_off" : {
+            "suggested_key" : {
+                "default" : "Ctrl + Shift + I",
+                "mac" : "Command + Shift + I"
+            },
+            "description" : "Turns off Dictionare extension"
+        }
     }
 
 }
