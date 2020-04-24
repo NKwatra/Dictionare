@@ -2,14 +2,6 @@
       list-style-type: decimal !important;
   }
 
-  .dictionare_col-4{
-      width: 33.34%;
-      padding-left: 20px;
-  }
-  .dictionare_col-8{
-      width: 66.66%;
-      padding-left: 20px;
-  }
   .dictionare_container{
     width: 350px;
     height: 200px;
@@ -30,16 +22,20 @@
     font-size: 1.5rem;
 }
 
+.dictionare_detail_main{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+    overflow: auto;
+}
+
 .dictionare_lds-ring {
     display: inline-block;
     position: relative;
     width: 80px;
     height: 80px;
   }
-
-.dictionare_mt{
-    margin-top: 15px;
-}
 
 .dictionare_pointer{
     cursor: pointer;
@@ -48,7 +44,7 @@
 .dictionare_right_container{
     font-size: 1.5rem;
     position: absolute;
-    bottom: 5px;
+    bottom: 2px;
     right: 5px;
 }
   
@@ -57,24 +53,27 @@
     width: 100%;
 }
 
-
 .dictionare_speaker_container{
     font-size: 1.8rem;
     padding: 15px 30px;
     color: #444444;
 }
 
+.dictionare_syn_header{
+    text-transform: uppercase;
+    margin-left: 20px;
+    font-weight: 600;
+}
+
+.dictionare_syn{
+    margin-left: 30px;
+    margin-top: 10px;
+    font-style: italic;
+    margin-right: 20px;
+}
+
 .dictionare_text-right{
     float: right;
-}
-
-.dictionare_usage_header{
-    padding-left: 20px;
-}
-
-.dictionare_usage_container{
-    font-style: italic;
-    padding-left: 20px;
 }
 
 .dictionare_word_container{
@@ -128,10 +127,4 @@
 
   ol:first-child{
       margin-top: 0;
-  }
-
-  #dictionare_right{
-      position: absolute;
-      bottom: 2px;
-      right: 5px;
   }
