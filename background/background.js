@@ -3,6 +3,10 @@ const stateKey = 'Dictionare_stateOn';
 const guideKey = 'Dictionare_guideOn';
 const cacheKey = 'Dictionare_cache';
 
+// constants for command names
+const commandOn = 'turn_extension_on';
+const commandOff = 'turn_extension_off';
+
 // listen for when extention is installed for first time or is updated 
 chrome.runtime.onInstalled.addListener(function() {
     // get the current state of extention from storage
@@ -39,3 +43,20 @@ chrome.windows.onCreated.addListener(function() {
         chrome.browserAction.setBadgeBackgroundColor({color : bgColor});
     });
 }, {windowTypes : ['normal']});
+
+/* listen for commands (shortcut keys) from the user */
+chrome.commands.onCommand.addListener(function(command) {
+    // turn on extension
+    if(command === commandOn)
+    {
+        chrome.storage.local.set({[stateKey] : true});
+        chrome.browserAction.setBadgeText({text : "ON" });
+        chrome.browserAction.setBadgeBackgroundColor({color : "#28a745" });
+    }
+    // turn off extension
+    else if(command == commandOff){
+        chrome.storage.local.set({[stateKey] : false});
+        chrome.browserAction.setBadgeText({text : "OFF" });
+        chrome.browserAction.setBadgeBackgroundColor({color : "#dc3545" });
+    }
+});
