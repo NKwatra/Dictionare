@@ -28,6 +28,12 @@ function selectionHandler() {
         // create overlay to show word and it's meaning
         createOverlay(x,y,text);
         overlayVisible = true;
+        // fetch information for the current word
+        loadWordInfo(text).then(data => {
+            let info = extractData(data);
+            updateOverlay(info["def"]);
+            makeRightActive(info["syn"], info["ant"]);
+        });
 
         // add listener to overlay to close, speak word and to expand details
         // of the word.
