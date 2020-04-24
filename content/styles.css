@@ -1,3 +1,7 @@
+  ol{
+      list-style-type: decimal !important;
+  }
+
   .dictionare_col-4{
       width: 33.34%;
       padding-left: 20px;
@@ -26,6 +30,13 @@
     font-size: 1.5rem;
 }
 
+.dictionare_lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+
 .dictionare_mt{
     margin-top: 15px;
 }
@@ -45,6 +56,7 @@
     display: flex;
     width: 100%;
 }
+
 
 .dictionare_speaker_container{
     font-size: 1.8rem;
@@ -75,7 +87,51 @@
     font-size: 1.3rem;
     line-height: 1.2rem;
     width: 70%;
-    padding: 20px 25px;
+    padding: 0 25px;
     font-style: italic;
     color: #6c757d;
 }
+
+.dictionare_lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border: 8px solid #fff;
+    border-radius: 50%;
+    animation: dictionare_lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #007bff transparent transparent transparent;
+  }
+  .dictionare_lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .dictionare_lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .dictionare_lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes dictionare_lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  ol > li {
+      margin-top: 10px;
+  }
+
+  ol:first-child{
+      margin-top: 0;
+  }
+
+  #dictionare_right{
+      position: absolute;
+      bottom: 2px;
+      right: 5px;
+  }

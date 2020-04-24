@@ -21,7 +21,7 @@
     "permissions" : ["storage"],
     "content_scripts" : [
         {
-            "js" : ["content/netWorkandSpeech.js", "content/utils.js", "content/main_script.js"],
+            "js" : ["content/key.js", "content/netWorkandSpeech.js", "content/utils.js", "content/main_script.js"],
             "matches" : ["*://*/*"],
             "css" : ["content/styles.css"]
         }

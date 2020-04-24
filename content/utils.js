@@ -88,9 +88,14 @@ function createOverlay(posx, posy, word)
   </svg>
     </div>
 </div>
-<div class="dictionare_row">
+<div class="dictionare_row" style="padding-left: 25px;">
     <div class="dictionare_word_info_container">
-        Lorem ipsum sit amid donor and some other random text.
+        <div class="dictionare_lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
     <div class="dictionare_right_container">
         <svg class="dictionare_pointer" id="dictionare_right" width="1em" height="1em" viewBox="0 0 16 16" fill="#aaa9ad" xmlns="http://www.w3.org/2000/svg">
@@ -271,4 +276,9 @@ function addDetailsOverlay()
     detailsContainer.style.top = y + "px";
     document.body.prepend(detailsContainer);
     document.getElementById('dictionare_detail_cross').addEventListener('click', closeDetailOverlay);
+}
+
+/* function to update overlay, remove spinning indicator and show word definition */
+function updateOverlay(def){
+    document.querySelector('.dictionare_word_info_container').innerHTML = def;
 }
