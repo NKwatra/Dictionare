@@ -2,6 +2,53 @@
       list-style-type: decimal !important;
   }
 
+  .dictionare_d-flex{
+    display: flex;
+  }
+
+  .dictionare_column{
+    flex-direction: column;
+  }
+
+  .dictionare_content_center{
+    justify-content: center;
+  }
+
+  .dictionare_fixed-width{
+    width: 800px;
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 1px rgba(0,0,0,0.125);
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.125);
+  }
+
+  .dictionare_video_responsive{
+    width: 100%;
+  }
+
+  .dictionare_title-text{
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .dictionare_footer-text{
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 1.2rem;
+  }
+
+  .dictionare_okay_button{
+    text-transform: uppercase;
+    padding: 10px 30px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #fff;
+    background-color: #28a745;
+  }
+
   .dictionare_container{
     width: 350px;
     height: 200px;
