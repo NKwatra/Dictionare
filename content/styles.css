@@ -17,6 +17,7 @@
   .dictionare_fixed-width{
     width: 800px;
     padding: 10px;
+    position: fixed;
     border-radius: 10px;
     border: solid 1px rgba(0,0,0,0.125);
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.125);

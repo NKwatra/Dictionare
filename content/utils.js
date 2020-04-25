@@ -284,3 +284,37 @@ function addDetailsOverlay(syns, ants)
 function updateOverlay(def){
     document.querySelector('.dictionare_word_info_container').innerHTML = def;
 }
+
+/* function to display user guide */
+function displayUserGuide()
+{
+    const container = document.createElement('div');
+    container.className = "dictionare_d-flex dictionare_column dictionare_fixed-width";
+    const videoUrl = chrome.runtime.getURL("./demos/demo.mov");
+    container.id = "dictionare_guide_container";
+    container.innerHTML = `<div class="dictionare_title-text">
+    The demo below explains how to use Dictionare :
+</div>
+<div class="dictionare_d-flex dictionare_content_center">
+    <video controls src=${videoUrl} class="dictionare_video_responsive"></video>
+</div>
+<div class="dictionare_footer-text">
+    Shotcuts to turn extention on and off :
+    <ul>
+        <li>To turn extension on : <strong>Cntl / Command + I</strong></li>
+        <li>To turn extention off : <strong>Cntl / Command + Shift + I</strong></li>
+    </ul>
+    <label for="dictionare_guide_check">
+        <input type="checkbox" id="dictionare_guide_check">
+        Do not show this again
+    </label> 
+</div>
+<div class="dictionare_d-flex dictionare_content_center">
+    <button class="dictionare_okay_button" id="dictionare_okay">got it</button>
+</div>`;
+    const width = document.documentElement.clientWidth;
+    const posx = (width - 800)/ 2;
+    container.style.left = posx + "px";
+    container.style.top = "100px";
+    document.body.prepend(container);
+}

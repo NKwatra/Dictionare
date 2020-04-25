@@ -4,7 +4,6 @@ const guideKey = 'Dictionare_guideOn';
 const cacheKey = 'Dictionare_cache';
 
 
-
 // function to handle text selection logic
 function selectionHandler() {
     // get the text and the co-ordinates of the selected area 
@@ -71,3 +70,19 @@ chrome.storage.onChanged.addListener(function(changes) {
         }
     }
 });
+
+// listen for messages from pop up to show guide
+chrome.runtime.onConnect.addListener(function(port){
+    // check if msg is from correct extension
+    if(port.name === 'Dictionare')
+    {
+        // add event listener to listen for messages
+        port.onMessage.addListener(function(msg){
+            // display user guide if asked to
+            if(msg["showGuide"])
+            {
+                displayUserGuide();
+            }
+        })
+    }
+})

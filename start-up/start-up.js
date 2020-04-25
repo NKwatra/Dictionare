@@ -6,7 +6,7 @@ const guideKey = 'Dictionare_guideOn';
 chrome.storage.local.get([stateKey, guideKey], results => {
     // create variable to store extention state
     let stateOn = results[stateKey];
-    let guideOn = results[guideKey];
+    let guideOn = results[guideKey] || true;
     // get reference to toggle button 
     const toggleButton = document.querySelector('.ext_toggle');
     // make button active and change color of button depending 
@@ -40,7 +40,14 @@ chrome.storage.local.get([stateKey, guideKey], results => {
             toggleButton.textContent = "TURN OFF";
             // update badge
             chrome.browserAction.setBadgeText({text : "ON"});
-            chrome.browserAction.setBadgeBackgroundColor({color : "#28a745"})
+            chrome.browserAction.setBadgeBackgroundColor({color : "#28a745"});
+            // check we need to display guide
+            if(guideOn){
+                chrome.tabs.query({active : true, currentWindow : true}, function(tabs){
+                    const port =chrome.tabs.connect(tabs[0].id, {name : "Dictionare"});
+                    port.postMessage({showGuide : true});
+                })
+            }
             // update the state of extention in storage to active
             stateOn = true;
             chrome.storage.local.set({[stateKey] : stateOn});
