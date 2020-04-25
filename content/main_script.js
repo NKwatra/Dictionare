@@ -1,9 +1,3 @@
-// constants for keys used in storage
-const stateKey = 'Dictionare_stateOn';
-const guideKey = 'Dictionare_guideOn';
-const cacheKey = 'Dictionare_cache';
-
-
 // function to handle text selection logic
 function selectionHandler() {
     // get the text and the co-ordinates of the selected area 
@@ -41,9 +35,8 @@ function selectionHandler() {
 };
 
 // get the current state of extention, 
-chrome.storage.local.get([stateKey, cacheKey], results => {
-    const currentState = results[stateKey] || true;
-    const cache = results[cacheKey];
+chrome.storage.local.get([stateKey], results => {
+    const currentState = results[stateKey];
     // if extention is enables
     if(currentState)
     {
@@ -79,7 +72,7 @@ chrome.runtime.onConnect.addListener(function(port){
         // add event listener to listen for messages
         port.onMessage.addListener(function(msg){
             // display user guide if asked to
-            if(msg["showGuide"])
+            if(msg["showGuide"] && !guideVisible)
             {
                 displayUserGuide();
             }

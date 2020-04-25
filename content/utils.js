@@ -1,5 +1,10 @@
+// constants for keys used in storage
+const stateKey = 'Dictionare_stateOn';
+const guideKey = 'Dictionare_guideOn';
+
 // global variable to track if overlay is currently displayed
 let overlayVisible = false;
+let guideVisible = false;
 
 // function to get coordinates and text of selected area
 function getSelectionInfo() {
@@ -285,6 +290,33 @@ function updateOverlay(def){
     document.querySelector('.dictionare_word_info_container').innerHTML = def;
 }
 
+
+/* function to add listeners to user guide elements */
+function addGuideListeners() {
+    const okayButton = document.getElementById('dictionare_okay');
+    const checkBox = document.getElementById('dictionare_guide_check');
+    // handle clicks on checkbox
+    const checkBoxHandler = () => {
+        if(checkBox.checked)
+        {
+            // don't show use guide next time
+            chrome.storage.local.set({[guideKey] : false});
+        }else{
+            chrome.storage.local.set({[guideKey] : true});
+        }
+    }
+    // handle clicks on okay button
+    const okayButtonHandler = () => {
+        checkBox.removeEventListener('click', checkBoxHandler);
+        okayButton.removeEventListener('click', okayButtonHandler);
+        guideVisible = false;
+        document.body.removeChild(document.getElementById('dictionare_guide_container'));
+    }
+
+    okayButton.addEventListener('click', okayButtonHandler);
+    checkBox.addEventListener('click', checkBoxHandler);
+}
+
 /* function to display user guide */
 function displayUserGuide()
 {
@@ -320,4 +352,6 @@ function displayUserGuide()
     container.style.left = posx + "px";
     container.style.top = "10px";
     document.body.prepend(container);
+    guideVisible = true;
+    addGuideListeners();
 }
