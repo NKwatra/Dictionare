@@ -72,9 +72,14 @@ chrome.storage.onChanged.addListener(function(changes) {
 });
 
 // listen for messages from pop up to show guide
-chrome.runtime.onMessage.addListener(function(request){
-    if(request["showGuide"])
+chrome.runtime.onConnect.addListener(function(port){
+    if(port.name === 'Dictionare')
     {
-        displayUserGuide();
+        port.onMessage.addListener(function(msg){
+            if(msg["showGuide"])
+            {
+                displayUserGuide();
+            }
+        })
     }
-});
+})

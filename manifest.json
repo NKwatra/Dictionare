@@ -19,6 +19,10 @@
         "default_popup": "./start-up/start-up.html"
     },
     "author": "Nishkarsh Kwatra",
-    "permissions": ["storage"]
+    "permissions": ["storage"],
+    "content_scripts" :[{
+        "js" : ["content/utils.js", "content/main_script.js"],
+        "matches" : ["*://*/*"]
+        }]
 
 }
