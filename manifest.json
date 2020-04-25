@@ -46,6 +46,9 @@
             },
             "description" : "Turns off Dictionare extension"
         }
-    }
+    },
+    "web_accessible_resources" : [
+        "demos/demo.mp4"
+    ]
 
 }

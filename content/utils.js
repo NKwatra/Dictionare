@@ -290,13 +290,16 @@ function displayUserGuide()
 {
     const container = document.createElement('div');
     container.className = "dictionare_d-flex dictionare_column dictionare_fixed-width";
-    const videoUrl = chrome.runtime.getURL("./demos/demo.mov");
+    const videoUrl = chrome.runtime.getURL("demos/demo.mp4");
     container.id = "dictionare_guide_container";
     container.innerHTML = `<div class="dictionare_title-text">
     The demo below explains how to use Dictionare :
 </div>
 <div class="dictionare_d-flex dictionare_content_center">
-    <video controls src=${videoUrl} class="dictionare_video_responsive"></video>
+    <video class="dictionare_video_responsive" controls autoplay>
+        <source src=${videoUrl} type="video/mp4">
+        Your browser does not support mp4 videos
+    </video>
 </div>
 <div class="dictionare_footer-text">
     Shotcuts to turn extention on and off :
@@ -315,6 +318,6 @@ function displayUserGuide()
     const width = document.documentElement.clientWidth;
     const posx = (width - 800)/ 2;
     container.style.left = posx + "px";
-    container.style.top = "100px";
+    container.style.top = "10px";
     document.body.prepend(container);
 }
